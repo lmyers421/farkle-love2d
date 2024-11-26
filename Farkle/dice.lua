@@ -19,15 +19,7 @@ function Dice:new(x)
 end
 
 function Dice:update(dt)
-    if self.selected then
-        if self.y < 400 then
-            self.y = self.y + 700 * dt
-        end
-    else
-        if self.y > 100 then
-            self.y = self.y - 700 * dt
-        end
-    end
+
 end
 
 function Dice:draw()
@@ -48,9 +40,11 @@ end
 
 function Dice:select()
         if self.selected then
+            Flux.to(self, .2, {x = self.x, y = 100}):ease("quadout")
             self.selected = false
             return
         end
+        Flux.to(self, .2, {x = self.x, y = 400}):ease("quadout")
         self.selected = true
 end
 

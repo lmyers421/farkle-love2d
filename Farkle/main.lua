@@ -4,6 +4,7 @@ end
 
 function love.load()
     Object = require "classic"
+    Flux = require "flux"
     require "dice"
     DiceList = {}
     local d1 = Dice(100)
@@ -27,9 +28,7 @@ function love.load()
 end
 
 function love.update(dt)
-    for i,v in ipairs(DiceList) do
-        v:update(dt)
-    end
+    Flux.update(dt)
 end
 
 function love.draw()
@@ -65,13 +64,11 @@ end
 
 function CalculateRollScore()
     RollScore = 0
-    print("entered")
     for i,v in ipairs(DiceList) do
         if v.selected then
             table.insert(DiceSelected, v)
         end
     end
-    print("Interted selected")
     for i,v in ipairs(DiceSelected) do
         if v.value == 1 then
             RollScore = RollScore + 100
