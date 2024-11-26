@@ -6,6 +6,16 @@ function Dice:new(x)
     self.y = 100
     self.selected = false
     self.locked = false
+    self.frames = {}
+    self.framesLocked = {}
+
+    for i=1,6 do
+        table.insert(self.frames, love.graphics.newImage("sprites/dice_sprite".. i ..".png"))
+    end 
+
+    for i=1,6 do
+        table.insert(self.framesLocked, love.graphics.newImage("sprites/dice_sprite".. i .."_locked.png"))
+    end 
 end
 
 function Dice:update(dt)
@@ -22,11 +32,10 @@ end
 
 function Dice:draw()
     if self.locked then
-        love.graphics.rectangle("line", self.x, self.y, 45, 45, 5, 5)
+        love.graphics.draw(self.framesLocked[self.value], self.x, self.y)
     else
-        love.graphics.rectangle("line", self.x, self.y, 45, 45)
+        love.graphics.draw(self.frames[self.value], self.x, self.y)
     end
-    love.graphics.print("" .. self.value, self.x + 20, self.y + 15)
 end
 
 function Dice:roll()
