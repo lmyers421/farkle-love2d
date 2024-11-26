@@ -6,7 +6,9 @@ function love.load()
     Object = require "classic"
     Flux = require "flux"
     require "dice"
+    require "button"
     DiceList = {}
+    RollButton = Button()
     local d1 = Dice(100)
     table.insert(DiceList, d1)
     local d2 = Dice(150)
@@ -35,6 +37,7 @@ function love.draw()
     for i,v in ipairs(DiceList) do
         v:draw()
     end
+    RollButton:draw()
     love.graphics.print("".. RollScore, 10, 10)
     love.graphics.print("".. TotalScore, 10, 30)
 end
@@ -54,9 +57,14 @@ function love.mousereleased()
     local mouse_x = love.mouse.getX()
     local mouse_y = love.mouse.getY()
     for i,v in ipairs(DiceList) do
-        if mouse_x > v.x and mouse_x < v.x + 45 and mouse_y > v.y and mouse_y < v.y + 45 and not v.locked then
+        if CheckMouseOver(mouse_x, mouse_y, v) and not v.locked then
             v:select()
             CalculateRollScore()
+        end
+    end
+    if CheckMouseOver(mouse_x, mouse_y, RollButton) then
+        for i,v in ipairs(DiceList) do
+            v:roll()
         end
     end
     
@@ -101,6 +109,14 @@ function CheckForStraight(list)
     end
     return straight
 end
+
+function CheckMouseOver(x, y, Object)
+    if x > Object.x and x < Object.x + Object.width and y > Object.y and y < Object.y + Object.height then
+        return true
+    end
+    return false
+end
+
 
 
 

@@ -16,6 +16,10 @@ function Dice:new(x)
     for i=1,6 do
         table.insert(self.framesLocked, love.graphics.newImage("sprites/dice_sprite".. i .."_locked.png"))
     end 
+
+    self.width = self.frames[self.value]:getWidth()
+    self.height = self.frames[self.value]:getHeight()
+
 end
 
 function Dice:update(dt)
