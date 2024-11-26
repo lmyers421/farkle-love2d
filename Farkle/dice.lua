@@ -40,11 +40,11 @@ end
 
 function Dice:select()
         if self.selected then
-            Flux.to(self, .2, {x = self.x, y = 100}):ease("quadout")
+            Flux.to(self, .3, {x = self.x, y = 100}):ease("expoout")
             self.selected = false
             return
         end
-        Flux.to(self, .2, {x = self.x, y = 400}):ease("quadout")
+        Flux.to(self, .3, {x = self.x, y = 400}):ease("expoout")
         self.selected = true
 end
 
