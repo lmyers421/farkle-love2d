@@ -87,34 +87,20 @@ end
 
 function CheckForStraight(list)
     local straight = false
-    local one = false
-    local two = false
-    local three = false
-    local four = false
-    local five = false
-    local six = false
+    local values = {}
     for i,v in ipairs(list) do
-        if v.value == 1 then
-            one = true
-        end
-        if v.value == 2 then
-            two = true
-        end
-        if v.value == 3 then
-            three = true
-        end
-        if v.value == 4 then
-            four = true
-        end
-        if v.value == 5 then
-            five = true
-        end
-        if v.value == 6 then
-            six = true
-        end
+        table.insert(values, i, v.value)
     end
-    if one and two and three and four and five and six then
-        straight = true
+    if #values < 6 then
+        return straight
+    end
+    table.sort(values)
+    for i=1,6 do
+        if values[i] == i then
+            straight = true
+        else
+            straight = false
+        end
     end
     return straight
 end
