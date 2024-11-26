@@ -29,6 +29,16 @@ end
 
 function love.update(dt)
     Flux.update(dt)
+
+    local mouse_x = love.mouse.getX()
+    local mouse_y = love.mouse.getY()
+
+    for i,v in ipairs(DiceList) do
+        if mouse_x > v.x and mouse_x < v.x + v.width and mouse_y > v.y and mouse_y < v.y + v.height and not v.locked then
+            print("hovering over hitbox")
+        end
+    end
+
 end
 
 function love.draw()
@@ -37,6 +47,9 @@ function love.draw()
     end
     love.graphics.print("".. RollScore, 10, 10)
     love.graphics.print("".. TotalScore, 10, 30)
+
+    love.graphics.print("".. love.mouse.getX(), 10,80)
+    love.graphics.print("".. love.mouse.getY(), 10,100)
 end
 
 function love.keypressed(key)
@@ -54,7 +67,7 @@ function love.mousereleased()
     local mouse_x = love.mouse.getX()
     local mouse_y = love.mouse.getY()
     for i,v in ipairs(DiceList) do
-        if mouse_x > v.x and mouse_x < v.x + 45 and mouse_y > v.y and mouse_y < v.y + 45 and not v.locked then
+        if mouse_x > v.x and mouse_x < v.x + v.width and mouse_y > v.y and mouse_y < v.y + v.height and not v.locked then
             v:select()
             CalculateRollScore()
         end

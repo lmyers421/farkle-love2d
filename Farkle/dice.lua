@@ -2,8 +2,13 @@ Dice = Object.extend(Object)
 
 function Dice:new(x)
     self.value = 1
-    self.x = x
-    self.y = 100
+    self.selectedX = x
+    self.x = love.math.random(50,400)
+    self.startingX = self.x
+    self.y = love.math.random(50, 250)
+    self.startingY = self.y
+    self.r = (love.math.random(0,628))/100
+    self.startingR = self.r
     self.selected = false
     self.locked = false
     self.frames = {}
@@ -16,6 +21,10 @@ function Dice:new(x)
     for i=1,6 do
         table.insert(self.framesLocked, love.graphics.newImage("sprites/dice_sprite".. i .."_locked.png"))
     end 
+
+    self.width = self.frames[self.value]:getWidth()
+    self.height = self.frames[self.value]:getHeight()
+
 end
 
 function Dice:update(dt)
@@ -24,9 +33,13 @@ end
 
 function Dice:draw()
     if self.locked then
-        love.graphics.draw(self.framesLocked[self.value], self.x, self.y)
+        local imageLocked = self.framesLocked[self.value]
+        love.graphics.draw(imageLocked, self.x + self.width/2, self.y + self.height/2, self.r, 1, 1, self.width/2, self.height/2)
+        -- hitbox love.graphics.rectangle("line", self.x, self.y,image:getWidth(), image:getHeight())
     else
-        love.graphics.draw(self.frames[self.value], self.x, self.y)
+        local image = self.frames[self.value]
+        love.graphics.draw(image, self.x + self.width/2, self.y + self.height/2, self.r, 1, 1, self.width/2, self.height/2)
+        -- hitbox love.graphics.rectangle("line", self.x, self.y,image:getWidth(), image:getHeight())
     end
 end
 
@@ -40,11 +53,11 @@ end
 
 function Dice:select()
         if self.selected then
-            Flux.to(self, .3, {x = self.x, y = 100}):ease("expoout")
+            Flux.to(self, .3, {x = self.startingX, y = self.startingY, r = self.startingR}):ease("expoout")
             self.selected = false
             return
         end
-        Flux.to(self, .3, {x = self.x, y = 400}):ease("expoout")
+        Flux.to(self, .3, {x = self.selectedX, y = 400, r = 0}):ease("expoout")
         self.selected = true
 end
 
