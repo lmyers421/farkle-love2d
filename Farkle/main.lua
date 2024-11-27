@@ -64,6 +64,7 @@ function love.mousereleased()
     end
     if CheckMouseOver(mouse_x, mouse_y, RollButton) then
         for i,v in ipairs(DiceList) do
+            RollButton:clicked()
             v:roll()
         end
     end

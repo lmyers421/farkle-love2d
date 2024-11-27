@@ -15,3 +15,10 @@ end
 function Button:draw()
     love.graphics.draw(self.image, self.x, self.y)
 end
+
+function Button:clicked()
+    Flux.to(self, .05, {x = self.x, y = 455}):ease("linear")
+    Flux.to(self, .05, {x = self.x, y = 450}):ease("linear"):delay(.1)
+end
+
+
