@@ -11,7 +11,8 @@ function love.load()
     require "dice"
     require "button"
     DiceList = {}
-    RollButton = Button()
+    RollButton = Button(550, 350, love.graphics.newImage("sprites/rollbutton_sprite.png"))
+    EndTurnButton = Button(550, 475, love.graphics.newImage("sprites/endturnbutton_sprite.png"))
     local d1 = Dice(100)
     table.insert(DiceList, d1)
     local d2 = Dice(150)
@@ -30,10 +31,13 @@ function love.load()
 
     RollScore = 0
     TotalScore = 0
+
+    Farkle = false
 end
 
 function love.update(dt)
     Flux.update(dt)
+    Farkle = CheckForFarkle()
 end
 
 function love.draw()
@@ -41,8 +45,12 @@ function love.draw()
         v:draw()
     end
     RollButton:draw()
+    EndTurnButton:draw()
     love.graphics.print("".. RollScore, 10, 10)
     love.graphics.print("".. TotalScore, 10, 30)
+    if Farkle then
+        love.graphics.print("FARKLE", 10, 50)
+    end
 end
 
 function love.keypressed(key)
@@ -66,10 +74,13 @@ function love.mousereleased()
         end
     end
     if CheckMouseOver(mouse_x, mouse_y, RollButton) then
+        RollButton:clicked()
         for i,v in ipairs(DiceList) do
-            RollButton:clicked()
             v:roll()
         end
+    end
+    if CheckMouseOver(mouse_x,mouse_y, EndTurnButton) then
+        EndTurnButton:clicked()
     end
     
 end
@@ -119,6 +130,18 @@ function CheckMouseOver(x, y, Object)
         return true
     end
     return false
+end
+
+function CheckForFarkle()
+    local farkle = true
+    for i,v in ipairs(DiceList) do
+        if not v.locked then
+            if v.value == 1 or v.value == 5 then
+                farkle = false
+            end
+        end
+    end
+    return farkle
 end
 
 
