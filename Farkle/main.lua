@@ -3,6 +3,9 @@ if arg[2] == "debug" then
 end
 
 function love.load()
+    Success = love.window.setMode(800, 600, {fullscreen=false, resizable = true})
+    local r, g, b = love.math.colorFromBytes(56, 102, 58)
+    love.graphics.setBackgroundColor(r, g, b)
     Object = require "classic"
     Flux = require "flux"
     require "dice"
